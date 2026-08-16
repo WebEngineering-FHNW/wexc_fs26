@@ -1,0 +1,60 @@
+
+body {
+    margin-inline:   auto;
+    max-inline-size: max-content;
+    min-inline-size: 60ch;
+    font-family:     system-ui;
+}
+
+#out {
+    padding:           2em;
+    --clr-test-shadow: darkgreen;
+    box-shadow:        .5em .5em 2em -.5em var(--clr-test-shadow);
+
+    &:has(.failed) {
+        --clr-test-shadow: darkred;
+    }
+}
+
+details[open] {
+    margin-bottom: .2lh;
+}
+details::details-content {
+    margin-left: 1em;
+}
+
+
+.statistics {
+    display:               grid;
+    grid-template-columns: max-content auto;
+    gap:                   0 2ch;
+    margin-bottom:         .5lh;
+
+    & .number {
+        font-variant: tabular-nums;
+        text-align:   right;
+    }
+}
+
+details {
+    & .namedResult {
+        display:               grid;
+        grid-template-columns: repeat(4, max-content);
+        gap:                   0 1em;
+
+        & .test {
+            display:               grid;
+            grid-column:           1 / -1;
+            grid-template-columns: subgrid;
+
+            &.failed {
+                color: red;
+            }
+        }
+    }
+}
+
+summary:has(~ .failed),
+summary:has(~ .failed)::marker {
+    color: red;
+}

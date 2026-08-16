@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/design.css">
+    <link rel="stylesheet" href="../../framework/client/css/test.css">
+    <title>Artist App All Tests</title>
+</head>
+<body>
+<h1> Test Results </h1>
+<div id="out">
+</div>
+<script type="module">
+
+    import "../../framework/client/js/allFrameworkTests.js"
+    import "./js/allAppTests.js"
+
+    import {projectTestReport, setTestDebugging} from "../../framework/client/js/util/test.js";
+    setTestDebugging(true);
+    out.append(...projectTestReport())
+</script>
+</body>
+</html>
