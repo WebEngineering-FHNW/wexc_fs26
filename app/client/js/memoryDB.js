@@ -114,6 +114,8 @@ const role_user_relation = [
 ];
 const artist_artwork_relation = [
     {id: "0", artistId: "0", artworkId:"0"},
+    {id: "1", artistId: "0", artworkId:"1"},
+    {id: "2", artistId: "1", artworkId:"2"},
 ];
 const provenance_artwork_relation = [
     {id: "0", provenanceId: "0", artworkId:"2"},
