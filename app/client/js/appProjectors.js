@@ -25,11 +25,6 @@ const connectorProjector = (workbenchController) => {
                     </button>
                     <dialog id="artwork_selection_dialog">                    
                         <select multiple size=10>
-                            <option>Artwork 1</option>
-                            <option>Artwork 2</option>
-                            <option>Artwork 3</option>
-                            <option>Artwork 4</option>
-                            <option>Artwork 5</option>
                         </select>                    
                       <button class="submit" type="button" commandfor="artwork_selection_dialog" command="close">
                         Submit
@@ -44,17 +39,28 @@ const connectorProjector = (workbenchController) => {
             const submitButton = divEl.querySelector("button.submit");
             const dialogSelEl  = divEl.querySelector("dialog select");
             const ulEl         = divEl.querySelector("ul");
+
+            // before the dialog opens, fill the options with all available artworks
+            workbenchController
+                .getAllEntities(ARTWORK)
+                .then(artworks => {
+                    const optionsHtml = artworks.map(artwork=>`<option>${artwork.displayedAs}</option>`).join("");
+                    dialogSelEl.innerHTML = optionsHtml;
+                });
+
+            // when the dialog closes...
+            // update the list of artworks in the closed view with info from the current user selection
             submitButton.onclick = _evt => {
                 const selectedValues = [...dialogSelEl.selectedOptions].map(option => option.value);
                 ulEl.innerHTML       = selectedValues.map(value => `<li>${value}</li>`).join("");
             };
 
+            // fill the list of artworks in the closed view with info from the relation service
             workbenchController
                 .getRelationService(ARTIST_ARTWORK)
                 .getAll()
                 .then ( artist_artwork_rels => {
                     const filtered = artist_artwork_rels.filter( rel => rel.artistId === entity.id); // ...
-                    console.log(filtered);
                     const artworkIds = filtered.map( rel => rel.artworkId );
                     ulEl.innerHTML = "";
                     artworkIds.forEach( artworkId => {
@@ -64,23 +70,7 @@ const connectorProjector = (workbenchController) => {
                                 ulEl.innerHTML += `<li>${artwork.displayedAs}</li>`
                             });
                     })
-
                 });
-
-            // // data binding
-            // const selectEl = divEl.querySelector("select");
-            // workbenchController.getRelationService(ARTIST_ARTWORK).getAll()
-            //     .then( artist_artwork_rels => artist_artwork_rels.forEach( artist_artwork_rel => {
-            //            console.log(artist_artwork_rel, entity.id);
-            //            if ( artist_artwork_rel.artistId !== entity.id) { return; } // not our relations: skip
-            //            workbenchController.findEntity(ARTWORK, artist_artwork_rel.artworkId)
-            //                 .then( artwork => {
-            //                     console.log(artwork);
-            //                     const [option] = dom(`<option>${artwork.displayedAs}</option>`);
-            //                     selectEl.append(option);
-            //                 });
-            //        }
-            //     ));
 
             return [labelEl, divEl];
         };
