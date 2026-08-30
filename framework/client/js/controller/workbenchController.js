@@ -17,6 +17,7 @@ const WorkbenchController = siteController => {
         putEntity:          siteController.putEntity,
         onEntityChanged:    siteController.onEntityChanged,
         findEntity:         siteController.findEntity,
+        getAllEntities:     entityName => siteController.getEntityService(entityName).getAll(), // new since wexc fs26, connectors need to see all options
         getMeta:            siteController.getMeta,
         getRelationService: siteController.getRelationService, // well, this breaks symmetry
         getProjectors:      siteController.getProjectors,
