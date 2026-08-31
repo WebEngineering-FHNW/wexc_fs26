@@ -44,7 +44,7 @@ const connectorProjector = (workbenchController) => {
             workbenchController
                 .getAllEntities(ARTWORK)
                 .then(artworks => {
-                    const optionsHtml = artworks.map(artwork=>`<option>${artwork.displayedAs}</option>`).join("");
+                    const optionsHtml = artworks.map(artwork=>`<option value="${artwork.id}">${artwork.displayedAs}</option>`).join("");
                     dialogSelEl.innerHTML = optionsHtml;
                 });
 
@@ -56,6 +56,8 @@ const connectorProjector = (workbenchController) => {
             };
 
             // fill the list of artworks in the closed view with info from the relation service
+            // and update the selected attribute of the select options
+            dialogSelEl.querySelectorAll("option").forEach(option => option.removeAttribute("selected"));
             workbenchController
                 .getRelationService(ARTIST_ARTWORK)
                 .getAll()
@@ -67,7 +69,10 @@ const connectorProjector = (workbenchController) => {
                         workbenchController
                             .findEntity(ARTWORK, artworkId)
                             .then ( artwork => {
-                                ulEl.innerHTML += `<li>${artwork.displayedAs}</li>`
+                                // update the result view
+                                ulEl.innerHTML += `<li>${artwork.displayedAs}</li>`;
+                                // update the select options to mark the selected ones
+                                dialogSelEl.querySelector(`[value="${artworkId}"]`)?.setAttribute("selected","selected");
                             });
                     })
                 });
