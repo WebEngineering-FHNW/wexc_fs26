@@ -1,5 +1,6 @@
 @import "layout.css";
 @import "design.css";
+@import "select.css";
 
 body {
     font-family: var(--font-base), system-ui;

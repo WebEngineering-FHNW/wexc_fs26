@@ -15,7 +15,7 @@ const connectorProjector = (workbenchController) => {
 
             const [labelEl, divEl] = dom(`
                 <div>This Artist's Artworks</div>
-                <div class="dropzone many">
+                <div>
                     <ul>
                     </ul>
                     <button type="button" 
@@ -23,8 +23,9 @@ const connectorProjector = (workbenchController) => {
                         command="show-modal">
                         select
                     </button>
-                    <dialog id="artwork_selection_dialog">                    
-                        <select multiple size=10>
+                    <dialog id="artwork_selection_dialog">        
+                      <div>            
+                        <select multiple size=20>
                         </select>                    
                       <button class="submit" type="button" commandfor="artwork_selection_dialog" command="close">
                         Submit
@@ -32,6 +33,7 @@ const connectorProjector = (workbenchController) => {
                       <button type="button" commandfor="artwork_selection_dialog" command="close">
                         Cancel
                        </button>
+                       </div>
                     </dialog>
                 </div>
             `);
@@ -46,7 +48,16 @@ const connectorProjector = (workbenchController) => {
             workbenchController
                 .getAllEntities(ARTWORK)
                 .then(artworks => {
-                    const optionsHtml = artworks.map(artwork=>`<option data-text="${artwork.displayedAs}" value="${artwork.id}">${artwork.displayedAs}</option>`).join("");
+                    const optionsHtml = artworks.map( artwork=>
+                        `<option 
+                            data-text="${artwork.displayedAs}" 
+                            value="${artwork.id}"
+                            >
+                            <span class="icon"><img heigth=100 width=100 src="${artwork.pictureUrl}"></span>
+                            <span class="option-label">${artwork.displayedAs}</span>                            
+                            </option>
+                            `)
+                         .join("");
                     dialogSelEl.innerHTML = optionsHtml;
                 });
 
