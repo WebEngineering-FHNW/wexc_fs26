@@ -44,14 +44,14 @@ const connectorProjector = (workbenchController) => {
             workbenchController
                 .getAllEntities(ARTWORK)
                 .then(artworks => {
-                    const optionsHtml = artworks.map(artwork=>`<option value="${artwork.id}">${artwork.displayedAs}</option>`).join("");
+                    const optionsHtml = artworks.map(artwork=>`<option data-text="${artwork.displayedAs}" value="${artwork.id}">${artwork.displayedAs}</option>`).join("");
                     dialogSelEl.innerHTML = optionsHtml;
                 });
 
             // when the dialog closes...
             // update the list of artworks in the closed view with info from the current user selection
             submitButton.onclick = _evt => {
-                const selectedValues = [...dialogSelEl.selectedOptions].map(option => option.value);
+                const selectedValues = [...dialogSelEl.selectedOptions].map(option => option.getAttribute("data-text"));
                 ulEl.innerHTML       = selectedValues.map(value => `<li>${value}</li>`).join("");
             };
 
