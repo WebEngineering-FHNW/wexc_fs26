@@ -40,6 +40,8 @@ const connectorProjector = (workbenchController) => {
             const dialogSelEl  = divEl.querySelector("dialog select");
             const ulEl         = divEl.querySelector("ul");
 
+            // --- data binding ---
+
             // before the dialog opens, fill the options with all available artworks
             workbenchController
                 .getAllEntities(ARTWORK)
@@ -48,12 +50,6 @@ const connectorProjector = (workbenchController) => {
                     dialogSelEl.innerHTML = optionsHtml;
                 });
 
-            // when the dialog closes...
-            // update the list of artworks in the closed view with info from the current user selection
-            submitButton.onclick = _evt => {
-                const selectedValues = [...dialogSelEl.selectedOptions].map(option => option.getAttribute("data-text"));
-                ulEl.innerHTML       = selectedValues.map(value => `<li>${value}</li>`).join("");
-            };
 
             // fill the list of artworks in the closed view with info from the relation service
             // and update the selected attribute of the select options
@@ -76,6 +72,42 @@ const connectorProjector = (workbenchController) => {
                             });
                     })
                 });
+
+            // --- view binding
+
+            // when the dialog closes...
+            // update the list of artworks in the closed view with info from the current user selection
+            submitButton.onclick = _evt => {
+                const selectedValues     = [...dialogSelEl.selectedOptions].map(option => option.getAttribute("data-text"));
+                const selectedArtworkIds = [...dialogSelEl.selectedOptions].map(option => option.value);
+                ulEl.innerHTML       = selectedValues.map(value => `<li>${value}</li>`).join("");
+
+                const relationService = workbenchController.getRelationService(ARTIST_ARTWORK);
+                relationService
+                    .getAll()
+                    .then ( artist_artwork_rels => { // TODO: this is complex and should rather go into a controller
+                        // first remove all relations that might get in the way, then add the selected ones
+                        const removePromises =
+                            artist_artwork_rels
+                            .filter(rel => { // remove all artw for this artist
+                                if (rel.artistId===entity.id) return true;
+                                // we are in a one-to-many relation, therefore:
+                                // remove the artwork if we will set it but some else might be in a relation
+                                if ( selectedArtworkIds.indexOf( rel.artworkId) > -1 ) return true;
+                                return false;
+                            })
+                            .map( artist_artwork_rel => {
+                                return relationService.removeById(artist_artwork_rel.id);
+                        });
+                        // make sure all removals are finished before we add the selection
+                        Promise.all(removePromises)
+                           .then( _ => {
+                               selectedArtworkIds.forEach( artwId => {
+                                   relationService.add({artistId:entity.id, artworkId:artwId});
+                               })
+                           })
+                    });
+            };
 
             return [labelEl, divEl];
         };
