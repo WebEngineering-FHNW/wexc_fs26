@@ -1,6 +1,5 @@
 import {ConnectorProjector}     from "../../../framework/client/js/projector/connectorProjector.js";
 import {defaultProjectors}               from "../../../framework/client/js/projector/defaultProjectors.js";
-import {ARTIST, ARTIST_ARTWORK, ARTWORK} from "./appTypes.js";
 import {dom}                             from "../../../framework/client/js/util/dom.js";
 import {ONE_TO_MANY} from "../../../framework/client/js/types.js";
 
@@ -71,6 +70,14 @@ const connectorProjector = (workbenchController) => {
                     dialogSelEl.innerHTML = optionsHtml;
                 });
 
+            // navigate from the closed view to the respective entity
+            const bindUlLis = () => {
+                ulEl.querySelectorAll("li").forEach(li =>
+                    li.onclick = _evt => {
+                        workbenchController.selectId(otherTable, li.getAttribute("data-id"))
+                    }
+                )
+            };
 
             // fill the list of artworks in the closed view with info from the relation service
             // and update the selected attribute of the select options
@@ -88,6 +95,7 @@ const connectorProjector = (workbenchController) => {
                             .then ( manyEntity => {
                                 // update the result view
                                 ulEl.innerHTML += `<li data-id="${manyEntity.id}">${manyEntity.displayedAs}</li>`;
+                                bindUlLis();
                                 // update the select options to mark the selected ones
                                 dialogSelEl.querySelector(`[value="${manyId}"]`)?.setAttribute("selected","selected");
                             });
@@ -101,6 +109,7 @@ const connectorProjector = (workbenchController) => {
             submitButton.onclick = _evt => {
                 const selectedIds = [...dialogSelEl.selectedOptions].map(option => option.value);
                 ulEl.innerHTML = [...dialogSelEl.selectedOptions].map(option => `<li data-id="${option.value}">${option.getAttribute("data-text")}</li>`).join("");
+                bindUlLis();
 
                 const relationService = workbenchController.getRelationService(rel_meta.relationId);
                 relationService
