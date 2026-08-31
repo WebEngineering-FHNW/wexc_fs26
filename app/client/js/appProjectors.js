@@ -1,7 +1,8 @@
-import {ConnectorProjector}     from "../../../framework/client/js/projector/connectorProjector.js";
-import {defaultProjectors}               from "../../../framework/client/js/projector/defaultProjectors.js";
-import {dom}                             from "../../../framework/client/js/util/dom.js";
-import {ONE_TO_MANY} from "../../../framework/client/js/types.js";
+import {ConnectorProjector} from "../../../framework/client/js/projector/connectorProjector.js";
+import {defaultProjectors}  from "../../../framework/client/js/projector/defaultProjectors.js";
+import {dom}                from "../../../framework/client/js/util/dom.js";
+import {ONE_TO_MANY}        from "../../../framework/client/js/types.js";
+import {AVATAR_URL}         from "./Constants.js";
 
 export { appProjectors }
 
@@ -62,7 +63,7 @@ const connectorProjector = (workbenchController) => {
                             data-text="${manyEntity.displayedAs}" 
                             value="${manyEntity.id}"
                             >
-                            <span class="icon"><img heigth=100 width=100 src="${manyEntity.pictureUrl}"></span>
+                            <span class="icon"><img heigth=100 width=100 src="${manyEntity.pictureUrl ?? AVATAR_URL}"></span>
                             <span class="option-label">${manyEntity.displayedAs}</span>                            
                             </option>
                             `)
