@@ -1,7 +1,7 @@
 import {ROLE_ADMIN, ROLE_AUTH, ROLE_GUEST}                                                               from "./Constants.js";
 import {
 
-    USER,  STUDENT
+    USER, STUDENT, MODULE, STUDENT_MODULE
 } from "./appTypes.js";
 
 export { memoryDB };
@@ -22,10 +22,24 @@ const student_entity = [
     {id: "5", displayedAs: "Samira", firstname:"Samira", lastname:"Kaufmann", pictureUrl:"./img/Samira.png"},
     {id: "6", displayedAs: "Tim", firstname:"Tim", lastname:"Buser", pictureUrl:"./img/Tim.png"},
 ];
+const module_entity = [
+    {id: "0", displayedAs: "WexC",  pictureUrl:"./img/WexC.png"},
+    {id: "1", displayedAs: "WebPr", pictureUrl:"./img/WebPr.png"},
+    {id: "2", displayedAs: "WebCl", pictureUrl:"./img/WebCl.png"},
+];
+const student_module_relation = [
+    {id: "0", studentId: "0", moduleId: "0"},
+    {id: "1", studentId: "0", moduleId: "1"},
+    {id: "2", studentId: "1", moduleId: "0"},
+    {id: "3", studentId: "1", moduleId: "1"},
+];
 
 const memoryDB = {
 
-    [USER]:               user_entity,
-    [STUDENT]:               student_entity,
+    [USER]:    user_entity,
+    [MODULE]:  module_entity,
+    [STUDENT]: student_entity,
+
+    [STUDENT_MODULE]: student_module_relation,
 
 };
