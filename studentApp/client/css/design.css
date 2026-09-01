@@ -1,8 +1,8 @@
 /* design system: color palette, fonts, sizes, spaces */
 
 :root {
-    --clr-bg-dark:    hsl(240deg 40% 30%);
-    --clr-bg-half:    hsl(240deg 20% 94%);
+    --clr-bg-dark:    hsl(50deg 100% 70%);
+    --clr-bg-half:    hsl(50deg 100% 94%);
     --clr-fg-light:   white;
     --clr-accent:     orange;
     --clr-attention:  magenta;
@@ -86,7 +86,7 @@ button, input[type=submit] {
     box-shadow:       var(--shadow-small);
     font-size:        var(--size-base);
     letter-spacing:   var(--letter-spacing);
-    color:            var(--clr-bg-dark);
+    color:            black;
     font-weight:      500;
 }
 

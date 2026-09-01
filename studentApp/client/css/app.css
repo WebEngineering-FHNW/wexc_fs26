@@ -8,7 +8,7 @@ body {
 
 header, footer {
     background:    var(--clr-bg-dark);
-    color:         var(--clr-fg-light);
+    color:         black;
     padding-block: var(--dst-pad);
     text-align:    center;
 
@@ -31,7 +31,7 @@ main {
             box-shadow:       var(--shadow-small);
 
             & summary {
-                color:       var(--clr-bg-dark);
+                color:       black;
                 font-weight: bold;
                 min-width:   16ch; /* avoid too much of a jump when all summaries close */
             }
