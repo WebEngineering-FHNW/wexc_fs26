@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/app.css">
+    <title>Artist App (Server Mode)</title>
+</head>
+<body>
+
+<pre>
+    Production setup with live server not available
+    but code below is included to show how the setup would be made.
+
+    import {SiteController} from "../../framework/client/js/controller/siteController.js";
+
+    // app starter specific imports
+
+    import {ARTIST}            from "./js/appTypes.js";
+    import {appProjectors}     from "./js/appProjectors.js";
+    import {ProdServiceFactory} from "../../framework/client/js/service/prod/prodServiceFactory.js";
+
+    const siteController = SiteController();
+    siteController.setProjectors(appProjectors);
+    const baseUrl = window.location.origin;
+    siteController.setServiceFactory(ProdServiceFactory(baseUrl))
+        .then( _ => {
+            const siteProjector  = siteController.getProjectors().siteProjector(siteController);
+            document.body.append(...siteProjector.projectBodyContent());
+            return siteController.findEntity(ARTIST, "0");
+        })
+        .then( entity => {
+            siteController.setSelection({ entityName: ARTIST, entity })
+        } );
+</pre>
+
+<script type="module">
+</script>
+
+</body>
+</html>

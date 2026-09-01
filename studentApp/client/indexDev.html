@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/app.css">
+    <title>Artist App (Development Mode)</title>
+</head>
+<body>
+
+<script type="module">
+
+    // general imports
+
+    import {SiteController} from "../../framework/client/js/controller/siteController.js";
+
+    // app starter specific imports
+
+    // import {ARTIST}            from "./js/appTypes.js";
+    import {Meta}              from "./js/meta.js";
+    import {memoryDB}          from './js/memoryDB.js';
+    import {DevServiceFactory} from "../../framework/client/js/service/dev/devServiceFactory.js";
+    import {appProjectors}     from "./js/appProjectors.js";
+    import {STUDENT}           from "./js/appTypes.js";
+    // import {defaultProjectors} from "../../framework/client/js/projector/defaultProjectors.js";
+
+    const siteController = SiteController();
+
+    siteController.setProjectors(appProjectors);
+    // siteController.setProjectors(defaultProjectors);
+
+    siteController.setServiceFactory(DevServiceFactory(Meta(), memoryDB))
+        .then( _ => {
+            const siteProjector  = siteController.getProjectors().siteProjector(siteController);
+            document.body.append(...siteProjector.projectBodyContent());
+            return siteController.findEntity(STUDENT, "0");
+        })
+        .then( entity => {
+            siteController.setSelection({ entityName: STUDENT, entity })
+        } );
+
+</script>
+</body>
+</html>

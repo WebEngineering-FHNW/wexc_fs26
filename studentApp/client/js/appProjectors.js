@@ -3,7 +3,6 @@ import {defaultProjectors}  from "../../../framework/client/js/projector/default
 import {dom}                from "../../../framework/client/js/util/dom.js";
 import {ONE_TO_MANY}        from "../../../framework/client/js/types.js";
 import {AVATAR_URL}             from "./Constants.js";
-import {ARTIST, ARTIST_ARTWORK} from "./appTypes.js";
 
 export { appProjectors }
 
